@@ -13,6 +13,9 @@ import edu.ap.spring.jpa.QuestionRepository;
 import edu.ap.spring.model.EightBall;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 @Component
@@ -62,19 +65,10 @@ public class UI implements InitializingBean {
 		btn_Ask.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String questionAsked = text_Question.getText();
-				Question found = repository.findByQuestion(questionAsked);
-				System.out.println(found);
-				if (found != null)
-				{
-					lblAnswer.setText(found.getAnswer());
-				}
-				else
-				{
 				String answer = eightball.getRandomAnswer(questionAsked);
 				lblAnswer.setText(answer);
 				Question newQuestion = new Question(questionAsked, answer);
 				repository.save(newQuestion);
-				}
 			}
 		});
 		btn_Ask.setBounds(279, 17, 89, 23);
