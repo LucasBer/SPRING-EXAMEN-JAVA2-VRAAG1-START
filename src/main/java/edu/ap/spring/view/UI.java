@@ -5,12 +5,32 @@ import java.awt.FlowLayout;
 import javax.swing.*;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import edu.ap.spring.jpa.Question;
+import edu.ap.spring.jpa.QuestionRepository;
+import edu.ap.spring.model.EightBall;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 @Component
 public class UI implements InitializingBean {
+	
+    private QuestionRepository repository;
+    private EightBall eightball;
+    
+    
+    @Autowired
+    public void setRepository(QuestionRepository repository) {
+    		this.repository = repository;
+    }
+    
+    @Autowired
+    public void setEightBall(EightBall eightball) {
+    		this.eightball = eightball;
+    }
 	
 	private JFrame jFrame;
 	private JLabel lblQuestion, lblAnswer;
@@ -41,13 +61,18 @@ public class UI implements InitializingBean {
 		btn_Ask = new JButton("Ask");
 		btn_Ask.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String questionAsked = text_Question.getText();
+				String answer = eightball.getRandomAnswer(questionAsked);
+				lblAnswer.setText(answer);
+				Question newQuestion = new Question(questionAsked, answer);
+				repository.save(newQuestion);
 			}
 		});
 		btn_Ask.setBounds(279, 17, 89, 23);
 		jFrame.getContentPane().add(btn_Ask);
 		
 		lblAnswer = new JLabel("");
-		lblAnswer.setBounds(149, 77, 46, 14);
+		lblAnswer.setBounds(20, 57, 344, 34);
 		jFrame.getContentPane().add(lblAnswer);
 		jFrame.setVisible(true);
     }
