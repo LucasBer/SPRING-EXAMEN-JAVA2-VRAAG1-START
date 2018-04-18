@@ -1,5 +1,6 @@
 package edu.ap.spring.view;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.*;
@@ -50,7 +51,11 @@ public class UI implements InitializingBean {
 	  controlPanel = new JPanel();
 
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	jFrame.setLayout(new FlowLayout());
 		jFrame.getContentPane().setLayout(null);
+		jFrame.setPreferredSize(new Dimension(400, 400));
+		jFrame.add(controlPanel);
+		jFrame.setSize(400, 400);
 		
 		lblQuestion = new JLabel("Enter your question:");
 		lblQuestion.setBounds(10, 11, 134, 35);
@@ -67,8 +72,6 @@ public class UI implements InitializingBean {
 				String questionAsked = text_Question.getText();
 				String answer = eightball.getRandomAnswer(questionAsked);
 				lblAnswer.setText(answer);
-				Question newQuestion = new Question(questionAsked, answer);
-				repository.save(newQuestion);
 			}
 		});
 		btn_Ask.setBounds(279, 17, 89, 23);

@@ -30,25 +30,26 @@ public class EightBall {
 								"Don't count on it", 
 								"Outlook not so good"};
 	
-	private String[] copyAnswers = answers.clone();
+	private String[] copyAnswers = answers.clone(); 
+	private String[] copyAnswers2 = answers.clone(); //Werkte eerst met de orinele Array answers maar die moet intact blijven voor de test
 	
 	
 	public String getRandomAnswer(String question) {
 		Question found = repository.findByQuestion(question);
 		if (found != null) {
-			System.out.println("Found in DB: ");
 			return found.getAnswer();
 		}
 		else
 		{
-			if (answers.length == 0)
-				answers = copyAnswers;
-			List<String> remainingAnswers = new ArrayList<String>(Arrays.asList(answers));
-			int idx = new Random().nextInt(answers.length);
-			String answer = (answers[idx]);
+			if (copyAnswers.length == 0)
+				copyAnswers = copyAnswers2;
+			List<String> remainingAnswers = new ArrayList<String>(Arrays.asList(copyAnswers));
+			int idx = new Random().nextInt(copyAnswers.length);
+			String answer = (copyAnswers[idx]);
 			remainingAnswers.remove(answer);
-			System.out.println(remainingAnswers);
-			answers = remainingAnswers.toArray(new String[0]);
+			copyAnswers = remainingAnswers.toArray(new String[0]);
+			Question newQuestion = new Question(question, answer);
+			repository.save(newQuestion);
 			return answer;
 		}
 	}

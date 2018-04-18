@@ -34,6 +34,12 @@ public class Question {
 	public Question() {
 		
 	}
+	@Override
+	public String toString() {
+		return "Question [id=" + id + ", question=" + question + ", answer=" + answer + "]";
+	}
+	
+	
 	
 	
 	
